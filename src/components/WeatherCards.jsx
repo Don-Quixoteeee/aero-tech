@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 export default function WeatherCards() {
   const weatherData = [
     {
@@ -29,6 +31,19 @@ export default function WeatherCards() {
     }
   ];
 
+  const [filters, setFilters] = useState({
+    good: true,
+    bad: true,
+    unsuitable: false,
+  });
+
+  const handleFilterChange = (event) => {
+    const { name, checked } = event.target;
+    setFilters((prevFilters) => ({ ...prevFilters, [name]: checked }));
+  };
+
+  const filteredWeatherData = weatherData.filter((weather) => filters[weather.cardClass]);
+
   return (
     <div className="weather-section">
       <div className="location-header">
@@ -37,21 +52,36 @@ export default function WeatherCards() {
       
       <div className="condition-filters">
         <label className="filter-checkbox good-check">
-          <input type="checkbox" defaultChecked />
+          <input
+            type="checkbox"
+            name="good"
+            checked={filters.good}
+            onChange={handleFilterChange}
+          />
           <span>Good Conditions</span>
         </label>
         <label className="filter-checkbox bad-check">
-          <input type="checkbox" defaultChecked />
+          <input
+            type="checkbox"
+            name="bad"
+            checked={filters.bad}
+            onChange={handleFilterChange}
+          />
           <span>Bad Conditions</span>
         </label>
         <label className="filter-checkbox unsuitable-check">
-          <input type="checkbox" />
+          <input
+            type="checkbox"
+            name="unsuitable"
+            checked={filters.unsuitable}
+            onChange={handleFilterChange}
+          />
           <span>Unsuitable Conditions</span>
         </label>
       </div>
 
       <div className="weather-cards">
-        {weatherData.map((weather) => (
+        {filteredWeatherData.map((weather) => (
           <div key={weather.id} className={`weather-card ${weather.cardClass}`}>
             <div className="weather-icon">{weather.icon}</div>
             <div className="weather-time">{weather.time}</div>
