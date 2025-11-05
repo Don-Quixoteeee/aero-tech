@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export default function WeatherCards() {
+export default function WeatherCards({ location }) {
   // Component State Management
   const [weatherData, setWeatherData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -14,12 +14,12 @@ export default function WeatherCards() {
 
   // Fetch and process weather data on component mount
   useEffect(() => {
-    const fetchWeatherData = async () => {
-      // Using coordinates for Olney, Philadelphia
-      const lat = 40.03;
-      const lon = -75.13;
+    if (!location) return;
 
-      const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,weather_code&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&forecast_days=1`;
+    const fetchWeatherData = async () => {
+      const { latitude, longitude } = location;
+
+      const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,weather_code&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&forecast_days=1`;
 
       try {
         setLoading(true);
@@ -88,7 +88,7 @@ export default function WeatherCards() {
     };
 
     fetchWeatherData();
-  }, []); // Empty dependency array ensures this runs once on mount
+  }, [location]); // Re-run effect when location prop changes
 
   // Handler for updating filter state based on checkbox interaction
   const handleFilterChange = (event) => {
@@ -108,7 +108,7 @@ export default function WeatherCards() {
   return (
     <section className="weather-section" aria-labelledby="location-heading">
       <div className="location-header">
-        <h2 id="location-heading">Olney, Philadelphia</h2>
+        <h2 id="location-heading">{location?.name || 'Select a location'}</h2>
       </div>
 
       <div className="condition-filters">
