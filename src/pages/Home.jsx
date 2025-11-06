@@ -3,7 +3,7 @@ import "../styles/Dashboard.css";
 import Navbar from "../components/Navbar";
 import logo from "../assets/logo.png";
 
-export default function Dashboard() {
+export default function Home() {
   const navigate = useNavigate();
 
   const handleNavigate = (path) => {
