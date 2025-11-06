@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import "../styles/Dashboard.css";
 import Navbar from "../components/Navbar";
+import logo from "../assets/logo.png";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ export default function Dashboard() {
 
       {/* Main Content */}
       <main className="main-content">
-        <div className="logo-circle">App Logo</div>
+        <div className="logo-circle"><img src={logo} alt="AeroTech" /></div>
 
         <div className="app-info">
           <h1 className="app-name">AeroTech</h1>
